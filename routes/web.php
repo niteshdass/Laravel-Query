@@ -15,12 +15,13 @@ use Illuminate\Support\Facades\DB;
 */
 
 Route::get('/', function () {
-    //! It should use for normal step by step pagination
-    // $rooms = DB::table('users')->paginate(10);
-    //! It should use for infinity loader pagination
-    // $rooms = DB::table('users')->simplePaginate(10);
-    //! Dynamic pagination
-    $rooms = DB::table('users')->paginate($perPage = 10, $columns = ['name'], $pageName = 'user');
+    //! Because Laravel doesn't support full text search migration, that's why we have to use DB::statement() to create full text index
+    // $rooms = DB::statement('ALTER TABLE `comments` ADD FULLTEXT INDEX post_title_index (content)');
+    
+    $rooms = DB::table('comments')->whereRaw(
+        "MATCH(content) AGAINST(? IN BOOLEAN MODE)", 
+        ['+consequuntur accusant -dicta']
+    )->get();
     dd($rooms);
 
     return view('welcome');
