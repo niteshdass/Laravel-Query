@@ -17,6 +17,7 @@ class CreateCommentsTable extends Migration
             $table->id();
             $table->text('content')->nullable();
             $table->unsignedBigInteger('user_id');
+            $table->integer('ratting')->default(0);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
