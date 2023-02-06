@@ -16,11 +16,17 @@ use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
 
-    $roomId = 5;
+    $sortBy = null;
 
     $rooms = DB::table('reservations')
-    ->when($roomId, function ($query, $roomId) {
-        return $query->where([['check_in', '=' , '2023-01-03'],['room_id', '>=' ,$roomId]]);
+    //! This method will be called only if $sortBy is not null
+
+    ->when($sortBy, function ($query, $sortBy) {
+        return $query->orderBy($sortBy);
+    }, function ($query) {
+        //! This method will be called only if $sortBy is null
+
+        return $query->orderBy('user_id', 'desc');
     })
     ->get();
     dd($rooms);
