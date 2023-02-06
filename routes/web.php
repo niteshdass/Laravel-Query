@@ -29,6 +29,21 @@ Route::get('/', function () {
         return $query->orderBy('user_id', 'desc');
     })
     ->get();
+
+    // Normally chunk use with big data set to avoid memory issue and it will return collection of chunk data
+    // $rooms = DB::table('reservations')->orderBy('id')->chunk(10, function ($rooms) {
+    //     foreach ($rooms as $room) {
+    //         echo $room->check_in;
+    //     }
+    // });
+    // $rooms = DB::table('reservations')->get()->chunk(10);
+
+    //! Update all records
+    $rooms = DB::table('reservations')->orderBy('id')->chunk(10, function ($rooms) {
+        foreach ($rooms as $room) {
+            DB::table('reservations')->where('id', $room->id)->update(['check_in' => '2023-02-06']);
+        }
+    });
     dd($rooms);
 
     return view('welcome');
