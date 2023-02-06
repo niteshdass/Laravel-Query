@@ -15,32 +15,14 @@ use Illuminate\Support\Facades\DB;
 */
 
 Route::get('/', function () {
- //!get the total number of comments for each user
-    $room = DB::table('comments')->
-    //! you can use selectRaw() instead of select() and use DB::raw() instead of raw()
-    // select(
-    //     DB::raw('count(user_id) as total_comments, users.name as name'
-    // ))
-    selectRaw(
-        'count(user_id) as total_comments, users.name as name'
-    )
-    ->join(
-        'users', 'users.id', '=', 'comments.user_id'
-    )->groupBy('user_id')->orderBy('total_comments', 'desc')
+
+    $roomId = 5;
+
+    $rooms = DB::table('reservations')
+    ->when($roomId, function ($query, $roomId) {
+        return $query->where([['check_in', '=' , '2023-01-03'],['room_id', '>=' ,$roomId]]);
+    })
     ->get();
-
-    //! Get the all comments length and order by length
-
-    // $rooms = DB::table('comments')->selectRaw(
-    //     'LENGTH(content) as comment_length, content',
-    // )->orderByRaw('
-    //     LENGTH(content) DESC
-    // ')->get();
-
-    $rooms = DB::table('comments')->selectRaw(
-        'count(id) as number_of_5star_comments, ratting',
-    )->groupBy('ratting')->where('ratting', '=', 5)->get();
-
     dd($rooms);
 
     return view('welcome');
