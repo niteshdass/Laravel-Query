@@ -16,25 +16,21 @@ use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
 
-    // //? Note
-    // // You can utilize a transaction if you have many queries that each defend against one another.
-    // // All queries in a transaction will be rolled back if one fails.
-    // // and if every query succeeds, the transaction commits every query.
+    //! Get rooms and city information that are make a relation with reservations table
+    // $rooms = DB::table('reservations')
+    // ->join('rooms', 'reservations.room_id', '=', 'rooms.id')
+    // ->join('cities', 'reservations.city_id', '=', 'cities.id')
+    // ->get();
 
-    // DB::transaction(function () {
-    //     try {
-    //         DB::table('users')->delete(5);
-    //         $result = DB::table('users')->where('id', 4)->update(['name' => 'John Doe']);
-    //         // Just to be sure you can return an exception, trnasaction often does so whenever any query fails.
-    //         if (!$result) {
-    //             throw new \Exception('Error');
-    //         }
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
-    //     }
-    // });
+    $rooms = DB::table('rooms')
+    ->leftJoin('reservations', 'rooms.id', '=', 'reservations.room_id')
+    ->leftJoin('cities', 'reservations.city_id', '=', 'cities.id')
+    ->selectRaw('rooms.room_size, reservations.check_in, cities.name , count(rooms.id) as total_reservations')
+    ->groupBy('room_size', 'check_in', 'name')
+    ->orderByRaw('count(reservations.id) desc')
+    ->get();
 
-
+    dd($rooms);
 
     return view('welcome');
 });
