@@ -15,21 +15,9 @@ use Illuminate\Support\Facades\DB;
 */
 
 Route::get('/', function () {
+    DB::table('rooms')->where('id', 1)->increment('room_price', 10);
 
-    //! Get rooms and city information that are make a relation with reservations table
-    // $rooms = DB::table('reservations')
-    // ->join('rooms', 'reservations.room_id', '=', 'rooms.id')
-    // ->join('cities', 'reservations.city_id', '=', 'cities.id')
-    // ->get();
-
-    $rooms = DB::table('rooms')
-    ->leftJoin('reservations', 'rooms.id', '=', 'reservations.room_id')
-    ->leftJoin('cities', 'reservations.city_id', '=', 'cities.id')
-    ->selectRaw('rooms.room_size, reservations.check_in, cities.name , count(rooms.id) as total_reservations')
-    ->groupBy('room_size', 'check_in', 'name')
-    ->orderByRaw('count(reservations.id) desc')
-    ->get();
-
+    $rooms = DB::table('rooms')->get();
     dd($rooms);
 
     return view('welcome');
