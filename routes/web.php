@@ -24,8 +24,9 @@ Route::get('/', function () {
 
     $rooms = DB::table('rooms')
     ->leftJoin('reservations', 'rooms.id', '=', 'reservations.room_id')
-    ->selectRaw('rooms.room_size, reservations.check_in, count(reservations.id) as total_reservations')
-    ->groupBy('room_size', 'check_in')
+    ->leftJoin('cities', 'reservations.city_id', '=', 'cities.id')
+    ->selectRaw('rooms.room_size, reservations.check_in, cities.name , count(rooms.id) as total_reservations')
+    ->groupBy('room_size', 'check_in', 'name')
     ->orderByRaw('count(reservations.id) desc')
     ->get();
 

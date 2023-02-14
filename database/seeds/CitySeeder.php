@@ -11,6 +11,6 @@ class CitySeeder extends Seeder
      */
     public function run()
     {
-        factory(App\City::class, 50)->create();
+        factory(App\City::class, 5)->create();
     }
 }
