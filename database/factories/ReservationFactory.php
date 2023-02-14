@@ -9,6 +9,7 @@ $factory->define(Reservation::class, function (Faker $faker) {
     return [
         'user_id' => $faker->numberBetween(1, 50),
         'room_id' => $faker->numberBetween(1, 50),
+        'city_id' => $faker->numberBetween(1, 50),
         'check_in' => $faker->dateTimeBetween('-10 days', 'now'),
         'check_out' => $faker->dateTimeBetween('now', '+10 days'),
     ];

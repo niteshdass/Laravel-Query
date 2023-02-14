@@ -16,34 +16,19 @@ use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
 
-    $sortBy = null;
+    //! Get rooms and city information that are make a relation with reservations table
+    // $rooms = DB::table('reservations')
+    // ->join('rooms', 'reservations.room_id', '=', 'rooms.id')
+    // ->join('cities', 'reservations.city_id', '=', 'cities.id')
+    // ->get();
 
-    $rooms = DB::table('reservations')
-    //! This method will be called only if $sortBy is not null
-
-    ->when($sortBy, function ($query, $sortBy) {
-        return $query->orderBy($sortBy);
-    }, function ($query) {
-        //! This method will be called only if $sortBy is null
-
-        return $query->orderBy('user_id', 'desc');
-    })
+    $rooms = DB::table('rooms')
+    ->leftJoin('reservations', 'rooms.id', '=', 'reservations.room_id')
+    ->selectRaw('room_size, count(reservations.id) as total_reservations)')
+    ->groupBy('room_size')
+    ->orderByRaw('count(reservations.id) desc')
     ->get();
 
-    // Normally chunk use with big data set to avoid memory issue and it will return collection of chunk data
-    // $rooms = DB::table('reservations')->orderBy('id')->chunk(10, function ($rooms) {
-    //     foreach ($rooms as $room) {
-    //         echo $room->check_in;
-    //     }
-    // });
-    // $rooms = DB::table('reservations')->get()->chunk(10);
-
-    //! Update all records
-    $rooms = DB::table('reservations')->orderBy('id')->chunk(10, function ($rooms) {
-        foreach ($rooms as $room) {
-            DB::table('reservations')->where('id', $room->id)->update(['check_in' => '2023-02-06']);
-        }
-    });
     dd($rooms);
 
     return view('welcome');
