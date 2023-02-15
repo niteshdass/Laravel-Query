@@ -18,55 +18,24 @@ use App\Reservation;
 */
 
 Route::get('/', function () {
-    // get all users ratting
-    // $rooms = User::select('name')
-    // ->addSelect(['wrost_ratting' => Comment::select('ratting')
-    //     ->whereColumn('user_id', 'users.id')
-    //     ->orderBy('ratting', 'asc')
-    //     ->limit(1)
-    // ])
-    // ->get();
+    //!get single user
+    // $rooms = User::select('name')->where('id', 1)->get();
+    // $rooms = User::find([1, 2, 9]); //get multiple users
 
-    //! get all users who have the most recent reservation
-    // $rooms = User::orderByDesc(
-    //     Reservation::select('check_in')
-    //         ->whereColumn('user_id', 'users.id')
-    //         ->orderBy('check_in', 'desc')
-    //         ->limit(1)
-    // )
-    //     ->get();
-
-    // Retrieve users in batches of 1000 records
-    // $rooms = User::chunk(1000, function ($users) {
-    //     foreach ($users as $user) {
-    //         // Perform task on each user
-    //         $user->update(['password' => '12345678']);
-    //         // or
-    //         // sendEmailToUser($user);
-    //     }
-    // });
-    //! if you want update your large amount of data in single query and you ensure that also you want to rollback all the changes if any error occur in the middle of the process then you can use transaction method
-    // $rooms = DB::transaction(function () {
-    //     User::chunk(10, function ($users) {
-    //         foreach ($users as $user) {
-    //             $user->update(['password' => '123456789']);
-    //             // Introduce a bug
-    //             throw new Exception('Intentional error');
-    //         }
+    //!If your use case like that , you want to update a data and if it doesn't exist then create it then you use First Or
+    // $rooms = User::where('email', 'example1@example.com')->firstOr(function () {
+    //         User::where('id', 1)->update(['name' => 'new name', 'email' => 'example1@example.com']);
     //     });
-    // });
+    //! If you want to add global scope in the spesific model then you add it in the booted method
+    //! If you have common sub query in your all query then you add it global scope in the spesific model
+    // $rooms  = Comment::withoutGlobalScopes(['ratting4', 'ratting3'])->get();
+    // $rooms  = Comment::withoutGlobalScope('ratting3')->get();
+    // $rooms  = Comment::withoutGlobalScopes()->get();
 
-    //! Cursor and chunk is very close to each other but the difference is that cursor method will not store the result in memory and it will fetch the result from the database one by one and it will not store the result in memory
-    // $rooms = DB::table('users')
-    // ->orderBy('id')
-    // ->cursor()
-    // ->each(function ($user) {
-    //     // Perform task on each user
-    //     $user = User::find($user->id);
-    //     $user->update(['password' => now()]);
-    // });
-
-    $rooms = User::select('name');
+    //! We can also use local scope in the model
+    // $rooms  = Comment::ratting(2)->get();
+    // $rooms  = Comment::ratting5(5)->get();
+    $rooms = Comment::get();
     dd($rooms->toArray());
 
     return view('welcome');
