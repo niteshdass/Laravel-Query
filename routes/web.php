@@ -18,20 +18,26 @@ use App\Reservation;
 */
 
 Route::get('/', function () {
-    // $rooms = Comment::get()->toArray();
-    // $rooms = Comment::get()->toJson();
-    // $rooms = Comment::get()->count();
+  
+    //! If you want to use soft delete, you must use soft delete trait in model and add deleted_at column in migration table
+    // $rooms = Comment::where('ratting', '>', 4)->delete();
 
+    // Force delete method allowed to permanently delete data
+    $rooms = Comment::where('ratting', '>', 4)->forceDelete();
 
-    //! Reject method is like filter method but it will return the opposite result
-    $comments = Comment::get();
-    $rooms = $comments->reject(function ($value, $key) {
-        return ($value->user_id < 32 || $value->ratting > 4);
-    });
+    // Restore method allowed to restore data
+    // $rooms = Comment::withTrashed()->restore();
 
-    // get the difference between two collections
-    // $rooms = $comments->diff($rooms)->toArray();
-    dd($rooms->toArray());
+    // Get data with trashed data
+    // $rooms = Comment::withTrashed()->get();
+
+    // Get data with only trashed data
+    // $rooms = Comment::onlyTrashed()->get();
+
+    // get data after delete
+    // $rooms = Comment::get();
+
+    dd($rooms);
 
     return view('welcome');
 });

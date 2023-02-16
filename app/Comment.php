@@ -4,9 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-
+use \Illuminate\Database\Eloquent\SoftDeletes;
 class Comment extends Model
 {
+    use SoftDeletes;
+    // protected $fillable = ['user_id', 'ratting', 'content'];
+    protected $guarded = ['id'];
     protected static function booted()
     {
         // parent::boot();
@@ -24,12 +27,12 @@ class Comment extends Model
         // });
         
     }
-    public function scopeRatting($query, $val)
-    {
-        return $query->where('ratting', '>',  $val);
-    }
-    public function scopeRatting5($query, $val)
-    {
-        return $query->where('ratting',  $val);
-    }
+    // public function scopeRatting($query, $val)
+    // {
+    //     return $query->where('ratting', '>',  $val);
+    // }
+    // public function scopeRatting5($query, $val)
+    // {
+    //     return $query->where('ratting',  $val);
+    // }
 }
