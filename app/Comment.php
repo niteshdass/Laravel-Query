@@ -12,33 +12,24 @@ class Comment extends Model
     protected static function booted()
     {
         parent::boot();
-        //! Here is the event list
-        // retrieved
-        // creating
-        // created
-        // updating
-        // updated
-        // saving
-        // saved
-        // deleting
-        // deleted
-        // restoring
-        // restored
-        // replicating
-        // forceDeleted
-        // retrievedByMany
-        // retrievedByManyUsingPivot
-        // retrievedByManyUsingSubqueries
-        // retrievedUsingPagination
-        // chunking
-
-        static::creating(function ($comment) {
-            $comment->content = 'creating content';
-        });
-
-        static::created(function ($comment) {
-            dd('created', $comment->toArray());
-        });
+    
     }
+    // Accessor for increment the ratting when it's retrieved from the database
+
+    // public function getRattingAttribute($value)
+    // {
+    //     return $value + 10;
+    // }
+
+    public function getWhoWhatAttribute($value)
+    {
+        return "User {$this->user_id} has rated this ratting {$this->ratting}";
+    }
+
+      // Mutator for increment rating before it's stored in the database
+      public function setRattingAttribute($value)
+      {
+          $this->attributes['ratting'] = $value + 1;
+      }
 
 }

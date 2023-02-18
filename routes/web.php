@@ -19,14 +19,15 @@ use App\Reservation;
 
 Route::get('/', function () {
   
-    // ! Comment create for check creating an created event
-    $comment = Comment::create([
-        'user_id' => 1,
-        'ratting' => 5,
-        'content' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.'
-    ]);
+    // ! CHere we update ratting with 2 and save it. but it will be 3 because of the mutator.
+    $rooms = Comment::find(2);
+    $rooms->ratting = 2;
+    $rooms->save();
+    dd($rooms->toArray());
 
-    // dd($rooms);
+    foreach ($rooms as $room) {
+        echo $room->whoWhat;
+    }
 
     return view('welcome');
 });
