@@ -19,25 +19,14 @@ use App\Reservation;
 
 Route::get('/', function () {
   
-    //! If you want to use soft delete, you must use soft delete trait in model and add deleted_at column in migration table
-    // $rooms = Comment::where('ratting', '>', 4)->delete();
+    // ! Comment create for check creating an created event
+    $comment = Comment::create([
+        'user_id' => 1,
+        'ratting' => 5,
+        'content' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.'
+    ]);
 
-    // Force delete method allowed to permanently delete data
-    $rooms = Comment::where('ratting', '>', 4)->forceDelete();
-
-    // Restore method allowed to restore data
-    // $rooms = Comment::withTrashed()->restore();
-
-    // Get data with trashed data
-    // $rooms = Comment::withTrashed()->get();
-
-    // Get data with only trashed data
-    // $rooms = Comment::onlyTrashed()->get();
-
-    // get data after delete
-    // $rooms = Comment::get();
-
-    dd($rooms);
+    // dd($rooms);
 
     return view('welcome');
 });

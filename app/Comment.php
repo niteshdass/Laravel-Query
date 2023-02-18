@@ -8,31 +8,37 @@ use \Illuminate\Database\Eloquent\SoftDeletes;
 class Comment extends Model
 {
     use SoftDeletes;
-    // protected $fillable = ['user_id', 'ratting', 'content'];
     protected $guarded = ['id'];
     protected static function booted()
     {
-        // parent::boot();
+        parent::boot();
+        //! Here is the event list
+        // retrieved
+        // creating
+        // created
+        // updating
+        // updated
+        // saving
+        // saved
+        // deleting
+        // deleted
+        // restoring
+        // restored
+        // replicating
+        // forceDeleted
+        // retrievedByMany
+        // retrievedByManyUsingPivot
+        // retrievedByManyUsingSubqueries
+        // retrievedUsingPagination
+        // chunking
 
-        // static::addGlobalScope('ratting4', function (Builder $builder) {
-        //     $builder->where('ratting', '>', 4);
-        // });
+        static::creating(function ($comment) {
+            $comment->content = 'creating content';
+        });
 
-        // static::addGlobalScope('ratting3', function (Builder $builder) {
-        //     $builder->where('ratting', '>', 3);
-        // });
-
-        // static::addGlobalScope('ratting2', function (Builder $builder) {
-        //     $builder->where('ratting', '>', 2);
-        // });
-        
+        static::created(function ($comment) {
+            dd('created', $comment->toArray());
+        });
     }
-    // public function scopeRatting($query, $val)
-    // {
-    //     return $query->where('ratting', '>',  $val);
-    // }
-    // public function scopeRatting5($query, $val)
-    // {
-    //     return $query->where('ratting',  $val);
-    // }
+
 }
