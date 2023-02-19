@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\User;
 use App\Comment;
+use App\Room;
 use App\Reservation;
 
 /*
@@ -20,14 +21,13 @@ use App\Reservation;
 Route::get('/', function () {
   
     // ! CHere we update ratting with 2 and save it. but it will be 3 because of the mutator.
-    $rooms = Comment::find(2);
-    $rooms->ratting = 2;
-    $rooms->save();
-    dd($rooms->toArray());
+    $rooms = Room::find(1);
 
-    foreach ($rooms as $room) {
-        echo $room->whoWhat;
-    }
+dd($rooms);
+
+    // foreach ($rooms as $room) {
+    //     echo $room['comments'] . '<br>';
+    // }
 
     return view('welcome');
 });

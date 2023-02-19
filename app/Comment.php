@@ -14,6 +14,10 @@ class Comment extends Model
         parent::boot();
     
     }
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'user_id', 'id');
+    }
     // Accessor for increment the ratting when it's retrieved from the database
 
     // public function getRattingAttribute($value)
