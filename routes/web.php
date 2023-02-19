@@ -16,25 +16,35 @@ use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
 
-    // //? Note
-    // // You can utilize a transaction if you have many queries that each defend against one another.
-    // // All queries in a transaction will be rolled back if one fails.
-    // // and if every query succeeds, the transaction commits every query.
+    $sortBy = null;
 
-    // DB::transaction(function () {
-    //     try {
-    //         DB::table('users')->delete(5);
-    //         $result = DB::table('users')->where('id', 4)->update(['name' => 'John Doe']);
-    //         // Just to be sure you can return an exception, trnasaction often does so whenever any query fails.
-    //         if (!$result) {
-    //             throw new \Exception('Error');
-    //         }
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
+    $rooms = DB::table('reservations')
+    //! This method will be called only if $sortBy is not null
+
+    ->when($sortBy, function ($query, $sortBy) {
+        return $query->orderBy($sortBy);
+    }, function ($query) {
+        //! This method will be called only if $sortBy is null
+
+        return $query->orderBy('user_id', 'desc');
+    })
+    ->get();
+
+    // Normally chunk use with big data set to avoid memory issue and it will return collection of chunk data
+    // $rooms = DB::table('reservations')->orderBy('id')->chunk(10, function ($rooms) {
+    //     foreach ($rooms as $room) {
+    //         echo $room->check_in;
     //     }
     // });
+    // $rooms = DB::table('reservations')->get()->chunk(10);
 
-
+    //! Update all records
+    $rooms = DB::table('reservations')->orderBy('id')->chunk(10, function ($rooms) {
+        foreach ($rooms as $room) {
+            DB::table('reservations')->where('id', $room->id)->update(['check_in' => '2023-02-06']);
+        }
+    });
+    dd($rooms);
 
     return view('welcome');
 });
