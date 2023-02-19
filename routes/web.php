@@ -15,26 +15,14 @@ use Illuminate\Support\Facades\DB;
 */
 
 Route::get('/', function () {
-
-    // //? Note
-    // // You can utilize a transaction if you have many queries that each defend against one another.
-    // // All queries in a transaction will be rolled back if one fails.
-    // // and if every query succeeds, the transaction commits every query.
-
-    // DB::transaction(function () {
-    //     try {
-    //         DB::table('users')->delete(5);
-    //         $result = DB::table('users')->where('id', 4)->update(['name' => 'John Doe']);
-    //         // Just to be sure you can return an exception, trnasaction often does so whenever any query fails.
-    //         if (!$result) {
-    //             throw new \Exception('Error');
-    //         }
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
-    //     }
-    // });
-
-
+    //! Because Laravel doesn't support full text search migration, that's why we have to use DB::statement() to create full text index
+    // $rooms = DB::statement('ALTER TABLE `comments` ADD FULLTEXT INDEX post_title_index (content)');
+    
+    $rooms = DB::table('comments')->whereRaw(
+        "MATCH(content) AGAINST(? IN BOOLEAN MODE)", 
+        ['+consequuntur accusant -dicta']
+    )->get();
+    dd($rooms);
 
     return view('welcome');
 });
