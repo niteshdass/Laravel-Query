@@ -19,6 +19,17 @@ class User extends Authenticatable
         'name', 'email', 'password',
     ];
 
+
+    public function address()
+    {
+        return $this->hasOne('App\Address', 'user_id', 'id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment', 'user_id', 'id');
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -35,5 +46,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'meta' => 'json'
     ];
 }

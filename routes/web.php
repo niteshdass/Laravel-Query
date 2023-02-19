@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use App\User;
+use App\Comment;
+use App\Room;
+use App\Reservation;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,26 +19,15 @@ use Illuminate\Support\Facades\DB;
 */
 
 Route::get('/', function () {
+  
+    // ! CHere we update ratting with 2 and save it. but it will be 3 because of the mutator.
+    $rooms = Room::find(1);
 
-    // //? Note
-    // // You can utilize a transaction if you have many queries that each defend against one another.
-    // // All queries in a transaction will be rolled back if one fails.
-    // // and if every query succeeds, the transaction commits every query.
+dd($rooms);
 
-    // DB::transaction(function () {
-    //     try {
-    //         DB::table('users')->delete(5);
-    //         $result = DB::table('users')->where('id', 4)->update(['name' => 'John Doe']);
-    //         // Just to be sure you can return an exception, trnasaction often does so whenever any query fails.
-    //         if (!$result) {
-    //             throw new \Exception('Error');
-    //         }
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
-    //     }
-    // });
-
-
+    // foreach ($rooms as $room) {
+    //     echo $room['comments'] . '<br>';
+    // }
 
     return view('welcome');
 });
