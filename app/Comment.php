@@ -14,6 +14,10 @@ class Comment extends Model
         parent::boot();
     
     }
+    public function country ()
+    {
+        return $this->hasOneThrough('App\Address', 'App\User', 'id', 'user_id', 'user_id', 'id')->select('country as name');
+    }
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
