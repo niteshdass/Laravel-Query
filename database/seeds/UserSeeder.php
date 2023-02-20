@@ -11,7 +11,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\User::class, 50)->create()->each(function ($user) {
+        factory(App\User::class, 3000)->create()->each(function ($user) {
             $user->address()->save(factory(App\Address::class)->make());
         });
     }

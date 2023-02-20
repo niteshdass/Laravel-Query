@@ -21,21 +21,19 @@ use App\Reservation;
 */
 
 Route::get('/', function () {
-  
-    // ! Delete all data from the relational table
-    // $rooms = User::find(2)->address()->delete();
+    //* Query Builder is faster then Eloquent ORM (Object Relational Mapping) 
+    //! Hard to write and read
+    // $users = DB::table('users')->get();
 
-    //! Create Many Address for a User
-    $user = User::find(2);
-    $rooms = $user->address()->createMany([ // you can use create, save, saveMany method also
-        ['number' => 1, 'street' => 'street 1', 'country' => 'country 1'],
-    ]);
 
-dd($rooms);
+    //! Eloquent ORM (Object Relational Mapping) is slow then DB::table() method (query builder)
+    //! Eloquent ORM use case is when you update delete or insert data to database and also when you need to use relationships between tables
+    //* Easy to write and read
+    //* There have some features like , Events, Mutators, Accessors, Relationships, Scopes, SoftDeletes etc...
+    $users = User::all();
 
-    // foreach ($rooms as $room) {
-    //     echo $room['comments'] . '<br>';
-    // }
+    
+    dump($users);
 
     return view('welcome');
 });

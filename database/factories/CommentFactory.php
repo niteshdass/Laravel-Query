@@ -9,6 +9,6 @@ $factory->define(Comment::class, function (Faker $faker) {
     return [
         'content' => $faker->text,
         'ratting' => $faker->numberBetween(1, 5),
-        'user_id' => $faker->numberBetween(1, 50),
+        'user_id' => $faker->numberBetween(1, 3000),
     ];
 });
