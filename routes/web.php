@@ -1,5 +1,6 @@
 <?php
 
+use App\City;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\User;
@@ -22,9 +23,9 @@ use App\Reservation;
 Route::get('/', function () {
   
     // ! CHere we update ratting with 2 and save it. but it will be 3 because of the mutator.
-    $rooms = Company::find(2)->reservations;
+    $rooms = City::find(5)->image;
 
-dd($rooms->toArray());
+dd($rooms);
 
     // foreach ($rooms as $room) {
     //     echo $room['comments'] . '<br>';
