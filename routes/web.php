@@ -22,21 +22,16 @@ use App\Reservation;
 
 Route::get('/', function () {
   
-    // ! Apply select and where condition on relationship table
-    // $rooms = User::find(3)->comments()->where('ratting', '<', '3')->get();
+    // ! Delete all data from the relational table
+    // $rooms = User::find(2)->address()->delete();
 
-    // $rooms = User::has('comments', '>', 2)->get();
-    $rooms = User::doesntHave('comments')->get();
+    //! Create Many Address for a User
+    $user = User::find(2);
+    $rooms = $user->address()->createMany([ // you can use create, save, saveMany method also
+        ['number' => 1, 'street' => 'street 1', 'country' => 'country 1'],
+    ]);
 
-    // ! withCount method is used to count the relationship table
-    // $rooms = User::withCount([
-    //     'comments',
-    //     'comments as good_comments_count' => function ($query) {
-    //         $query->where('ratting', '>', 2);
-    //     }
-    // ])->get();
-
-dd($rooms->toArray());
+dd($rooms);
 
     // foreach ($rooms as $room) {
     //     echo $room['comments'] . '<br>';

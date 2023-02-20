@@ -9,6 +9,7 @@ class AddressSeeder extends Seeder
      *
      * @return void
      */
+
     public function run()
     {
         factory(App\Address::class, 50)->create();
