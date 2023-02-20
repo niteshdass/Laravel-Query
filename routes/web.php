@@ -22,10 +22,21 @@ use App\Reservation;
 
 Route::get('/', function () {
   
-    // ! CHere we update ratting with 2 and save it. but it will be 3 because of the mutator.
-    $rooms = City::find(5)->image;
+    // ! Apply select and where condition on relationship table
+    // $rooms = User::find(3)->comments()->where('ratting', '<', '3')->get();
 
-dd($rooms);
+    // $rooms = User::has('comments', '>', 2)->get();
+    $rooms = User::doesntHave('comments')->get();
+
+    // ! withCount method is used to count the relationship table
+    // $rooms = User::withCount([
+    //     'comments',
+    //     'comments as good_comments_count' => function ($query) {
+    //         $query->where('ratting', '>', 2);
+    //     }
+    // ])->get();
+
+dd($rooms->toArray());
 
     // foreach ($rooms as $room) {
     //     echo $room['comments'] . '<br>';
